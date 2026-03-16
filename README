@@ -1,0 +1,24 @@
+# API Lista de Tarefas
+
+API REST simples desenvolvida com Node.js e Express para gerenciamento de tarefas.
+
+## Funcionalidades
+
+- Criar tarefa
+- Listar tarefas
+- Buscar tarefa por ID
+- Atualizar tarefa
+- Deletar tarefa
+
+## Tecnologias
+
+- Node.js
+- Express
+
+## Rotas
+
+GET /tarefas  
+POST /tarefas  
+GET /tarefas/:id  
+PUT /tarefas/:id  
+DELETE /tarefas/:id
