@@ -8,66 +8,65 @@ exports.listarTarefas = async (req, res) => {
     res.json(tarefas)
 }
 
-exports.criarTarefa = async (req, res) => {
+exports.criarTarefa = async (req, res, next) => {
     try {
-        const dados = tarefaSchema.parse(req.body)
-
         const tarefa = await prisma.tarefa.create({
-            data: dados
+            data: req.body
         })
 
         res.status(201).json(tarefa)
 
     } catch (error) {
-        res.status(400).json({
-    erro: error.issues.map(e => e.message)})
+        next(error)
     }
 }
 
-exports.buscarPorId = async (req, res) => {
-    const id = parseInt(req.params.id)
-
-    const tarefa = await prisma.tarefa.findUnique({
-        where: { id }
-    })
-
-    if (!tarefa) {
-        return res.status(404).json({ mensagem: "Tarefa não encontrada" })
-    }
-
-    res.json(tarefa)
-}
-
-exports.atualizarTarefa = async (req, res) => {
-    const id = parseInt(req.params.id)
-
+exports.buscarPorId = async (req, res, next) => {
     try {
-        const dados = tarefaSchema.parse(req.body)
+        const id = parseInt(req.params.id)
+
+        const tarefa = await prisma.tarefa.findUnique({
+            where: { id }
+        })
+
+        if (!tarefa) {
+            throw new Error("NOT_FOUND")
+        }
+
+        res.json(tarefa)
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+exports.atualizarTarefa = async (req, res, next) => {
+    try {
+        const id = parseInt(req.params.id)
 
         const tarefa = await prisma.tarefa.update({
             where: { id },
-            data: dados
+            data: req.body
         })
 
         res.json(tarefa)
 
     } catch (error) {
-       res.status(400).json({
-    erro: error.issues.map(e => e.message)})
+        next(error)
     }
 }
 
-exports.deletarTarefa = async (req, res) => {
-    const id = parseInt(req.params.id)
-
+exports.deletarTarefa = async (req, res, next) => {
     try {
+        const id = parseInt(req.params.id)
+
         await prisma.tarefa.delete({
             where: { id }
         })
 
         res.json({ mensagem: "Tarefa removida com sucesso" })
 
-    } catch {
-        res.status(404).json({ mensagem: "Tarefa não encontrada" })
+    } catch (error) {
+        next(error)
     }
 }
