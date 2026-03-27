@@ -1,3 +1,16 @@
 node_modules
 .env
+
+# Prisma
 /generated/prisma
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Sistema
+.DS_Store
+
+# IDE
+.vscode

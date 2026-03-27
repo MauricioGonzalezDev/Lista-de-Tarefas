@@ -12,3 +12,9 @@ model Tarefa {
   titulo     String
   concluida  Boolean
 }
+
+model User {
+  id Int @id @default(autoincrement())
+  email String @unique
+  password String
+}
